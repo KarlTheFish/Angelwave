@@ -18,6 +18,7 @@ public class GUI
         window.Resize(400, 400);
 
         window.DeleteEvent += delegate(object o, DeleteEventArgs args) { //Event called when window is closed
+            //TODO: Redo this with dialog widget
             args.RetVal = true;
             var confirm = new Window("Confirmation");
             confirm.Resize(200, 100);
@@ -53,17 +54,26 @@ public class GUI
         };
         
         Table layout = new Table(3, 3, false);
-        
+
         //Creating the buttons
         
         Button find = new Button("Find");
+        
+        //Other layout things
+
+        Frame optionsMenu = new Frame("Actions");
+        Frame playLists = new Frame("Playlists");
+        
+        
 
         //Attaching functions to the buttons
         
         find.ButtonPressEvent += FindHandler;
         
         //Adding the buttons to the layout
-        layout.Attach(find, 0, 1, 0, 1);
+        layout.Attach(optionsMenu, 0, 1, 0, 2);
+        layout.Attach(playLists, 1, 2, 0, 2);
+        layout.Attach(find, 0, 1, 2, 3);
         
         
         window.Add(layout);
