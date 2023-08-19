@@ -11,6 +11,7 @@ using System;
 public class GUI
 { 
     static string filePath;
+    public static VButtonBox songsList;
     public static void CreateGUI(){
         Application.Init();
         
@@ -75,6 +76,9 @@ public class GUI
 
         ActionBar actions = new ActionBar(); //TODO: Add music controls and progress bar to the action bar
         
+        songsList = new VButtonBox();
+        songsList.Homogeneous = true;
+        
         VButtonBox options = new VButtonBox();
 
         options.PackStart(find, false, false, 0);
@@ -88,6 +92,7 @@ public class GUI
 
 
         optionsMenu.Add(options);
+        foundSongs.Add(songsList);
 
         //Attaching functions to the buttons
         
@@ -128,7 +133,7 @@ public class GUI
         entry2.MarginBottom = 20;
         Button confirm = new Button("Confirm");
         
-        confirm.ButtonPressEvent += FinderHandler;
+        confirm.ButtonPressEvent += FinderHandler; //BUG: Sometimes console throws error if the button is pressed twice. Investigate.
 
         finderCont.Add(label);
         finderCont.Add(entry2);
