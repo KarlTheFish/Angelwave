@@ -2,15 +2,14 @@ namespace Angelwave;
 
 public class Finder
 {
-    private static string filePath;
-    private static string nextSong;
+    static Song newSong;
 
-    public static List<string> FoundSongs = new List<string>();
+    public static List<Song> FoundSongs = new List<Song>();
 
-    public static void FindAllSongs(string filePath)
-    {
+    public static void FindAllSongs(string filePath) {
         foreach (var song in Directory.GetFiles(filePath, "*.mp3", SearchOption.AllDirectories)) {
-            FoundSongs.Add(song);
+            newSong = new Song(Path.GetFileNameWithoutExtension(song), "Unknown", song);
+            FoundSongs.Add(newSong);
         }
 
         if (FoundSongs.Count == 0) {
@@ -19,7 +18,7 @@ public class Finder
         else {
             Console.WriteLine("Found songs:");
             foreach (var song in FoundSongs) {
-                Console.WriteLine(song.Remove(0, filePath.Length).Remove(song.Length - filePath.Length - 4, 4));
+                Console.WriteLine(song.Name);
             }
         }
     }

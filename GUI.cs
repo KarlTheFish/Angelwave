@@ -73,10 +73,10 @@ public class GUI
         Frame playLists = new Frame("Playlists");
         Frame foundSongs = new Frame("Songs");
 
-        VButtonBox options = new VButtonBox();
-        //options.Add(find);
-        //options.Add(newPlaylist);
+        ActionBar actions = new ActionBar(); //TODO: Add music controls and progress bar to the action bar
         
+        VButtonBox options = new VButtonBox();
+
         options.PackStart(find, false, false, 0);
         options.PackStart(newPlaylist, false, false, 0);
         options.PackEnd(new Box(Orientation.Vertical, 0), true, true, 0);
@@ -97,6 +97,7 @@ public class GUI
         layout.Attach(optionsMenu, 0, 1, 0, 2);
         layout.Attach(playLists, 1, 2, 0, 2);
         layout.Attach(foundSongs,2, 3, 0, 2);
+        layout.Attach(actions, 0, 3, 2, 3);
         
 
         window.Add(layout);
@@ -112,12 +113,14 @@ public class GUI
         }
     }
     
-    static Window finder = new Window("Finder");
+    static Window finder;
     static Entry entry2 = new Entry();
     static Label InvalidFilepathLabel = new Label("Please insert a valid path!");
 
     static void SongFinder() {
+        finder = new Window("Finder");
         finder.Resize(200, 200);
+        finder.Resizable = false;
         VBox finderCont = new VBox();
         finderCont.Margin = 20;
         Label label = new Label("Insert music file path:");
@@ -136,10 +139,6 @@ public class GUI
         finder.ShowAll();
         
         finderCont.Add(InvalidFilepathLabel);
-    }
-
-    static void Test() {
-        
     }
     
     [ConnectBefore]
@@ -160,6 +159,7 @@ public class GUI
                 }
                 finally {
                     finder.Destroy();
+                    finder = new Window("Finder");
                 }
             }
         }
