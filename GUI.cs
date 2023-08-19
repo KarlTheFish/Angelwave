@@ -9,7 +9,8 @@ using System;
 
 
 public class GUI
-{
+{ 
+    static string filePath;
     public static void CreateGUI(){
         Application.Init();
         
@@ -58,13 +59,35 @@ public class GUI
         //Creating the buttons
         
         Button find = new Button("Find");
+        find.Relief = ReliefStyle.None;
+        find.Margin = 0;
+        
+        Button newPlaylist = new Button("New Playlist");
+        newPlaylist.Relief = ReliefStyle.None;
+        newPlaylist.Margin = 0;
+        
         
         //Other layout things
-
+        
         Frame optionsMenu = new Frame("Actions");
         Frame playLists = new Frame("Playlists");
+        Frame foundSongs = new Frame("Songs");
+
+        VButtonBox options = new VButtonBox();
+        //options.Add(find);
+        //options.Add(newPlaylist);
+        
+        options.PackStart(find, false, false, 0);
+        options.PackStart(newPlaylist, false, false, 0);
+        options.PackEnd(new Box(Orientation.Vertical, 0), true, true, 0);
         
         
+        optionsMenu.BorderWidth = 0;
+        optionsMenu.Margin = 0;
+        options.Margin = 0;
+
+
+        optionsMenu.Add(options);
 
         //Attaching functions to the buttons
         
@@ -73,9 +96,9 @@ public class GUI
         //Adding the buttons to the layout
         layout.Attach(optionsMenu, 0, 1, 0, 2);
         layout.Attach(playLists, 1, 2, 0, 2);
-        layout.Attach(find, 0, 1, 2, 3);
+        layout.Attach(foundSongs,2, 3, 0, 2);
         
-        
+
         window.Add(layout);
         window.ShowAll();
         
@@ -85,7 +108,44 @@ public class GUI
     [ConnectBefore]
     static void FindHandler(object obj, ButtonPressEventArgs args) {
         if (args.Event.Button == 1) {
-            Console.WriteLine("Find button pressed");
+            SongFinder();
+        }
+    }
+
+    static Entry entry2 = new Entry();
+
+    static void SongFinder() { //TODO: Handle exceptions 
+        Window finder = new Window("Finder");
+        finder.Resize(200, 200);
+        
+        VBox cont = new VBox();
+        cont.Margin = 20;
+        Label label = new Label("Insert music file path:");
+        entry2.MarginTop = 20;
+        entry2.MarginBottom = 20;
+        Button confirm = new Button("Confirm");
+        
+        confirm.ButtonPressEvent += FinderHandler;
+
+        cont.Add(label);
+        cont.Add(entry2);
+        cont.Add(confirm);
+        
+        finder.Add(cont);
+        
+        finder.ShowAll();
+    }
+    
+    [ConnectBefore]
+    static void FinderHandler(object obj, ButtonPressEventArgs args) {
+        if (args.Event.Button == 1) {
+            filePath = entry2.Text;
+            if (filePath == "") {
+                Console.WriteLine("No filepath given");
+            }
+            else {
+                Finder.FindAllSongs(filePath);
+            }
         }
     }
 }
