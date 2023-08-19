@@ -111,15 +111,15 @@ public class GUI
             SongFinder();
         }
     }
-
+    
+    static Window finder = new Window("Finder");
     static Entry entry2 = new Entry();
+    static Label InvalidFilepathLabel = new Label("Please insert a valid path!");
 
-    static void SongFinder() { //TODO: Handle exceptions 
-        Window finder = new Window("Finder");
+    static void SongFinder() {
         finder.Resize(200, 200);
-        
-        VBox cont = new VBox();
-        cont.Margin = 20;
+        VBox finderCont = new VBox();
+        finderCont.Margin = 20;
         Label label = new Label("Insert music file path:");
         entry2.MarginTop = 20;
         entry2.MarginBottom = 20;
@@ -127,13 +127,19 @@ public class GUI
         
         confirm.ButtonPressEvent += FinderHandler;
 
-        cont.Add(label);
-        cont.Add(entry2);
-        cont.Add(confirm);
+        finderCont.Add(label);
+        finderCont.Add(entry2);
+        finderCont.Add(confirm);
         
-        finder.Add(cont);
+        finder.Add(finderCont);
         
         finder.ShowAll();
+        
+        finderCont.Add(InvalidFilepathLabel);
+    }
+
+    static void Test() {
+        
     }
     
     [ConnectBefore]
@@ -141,10 +147,20 @@ public class GUI
         if (args.Event.Button == 1) {
             filePath = entry2.Text;
             if (filePath == "") {
-                Console.WriteLine("No filepath given");
+                if (InvalidFilepathLabel.Visible == false) {
+                    InvalidFilepathLabel.Show();
+                }
             }
             else {
-                Finder.FindAllSongs(filePath);
+                try {
+                    Finder.FindAllSongs(filePath);
+                }
+                catch (Exception e) {
+                    Console.WriteLine("No songs were found!");
+                }
+                finally {
+                    finder.Destroy();
+                }
             }
         }
     }
