@@ -1,6 +1,6 @@
 using Gtk;
 
-namespace Angelwave;
+namespace Angelwave; //TODO: Make song data saved in a file
 
 public class Finder
 {
@@ -10,18 +10,19 @@ public class Finder
     static readonly List<Song> FoundSongs = new List<Song>();
 
     public static void FindAllSongs(string filePath) {
-        newSongsFound = false;
         NoPlaylists.Add(-1);
-        foreach (var song in Directory.GetFiles(filePath, "*.mp3", SearchOption.AllDirectories)) {
-            newSong = new Song(Path.GetFileNameWithoutExtension(song), "Unknown", song, NoPlaylists);
-            if (FoundSongs.Contains(newSong) == false) {
-                Console.WriteLine("A new song was found!");
-                FoundSongs.Add(newSong);
-                newSongsFound = true;
+
+        if (GUI.subDirSearchToggled == true) {
+            FindSongsInDir(filePath);
+            foreach (var dir in Directory.GetDirectories(filePath)) {
+                FindSongsInDir(dir);
             }
         }
+        else {
+            FindSongsInDir(filePath);
+        }
 
-        if (FoundSongs.Count == 0 || newSongsFound == false) {
+        if (FoundSongs.Count == 0) {
             Console.WriteLine("No new songs found.");
         }
         else {
@@ -39,5 +40,20 @@ public class Finder
         songLabel.Relief = ReliefStyle.None;
         songLabel.Margin = 0;
         return songLabel;
+    }
+
+    static void FindSongsInDir(string path) {
+        newSongsFound = false;
+        foreach (var song in Directory.GetFiles(path, "*.mp3", SearchOption.TopDirectoryOnly)) {
+            newSong = new Song(Path.GetFileNameWithoutExtension(song), "Unknown", song, NoPlaylists);
+            if (FoundSongs.Contains(newSong)) {
+                Console.WriteLine("This song is already found!");
+                newSongsFound = false;
+            }
+            else {
+                FoundSongs.Add(newSong);
+                newSongsFound = true;
+            }
+        }
     }
 }

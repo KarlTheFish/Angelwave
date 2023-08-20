@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Gdk;
 using GLib;
 
@@ -8,6 +9,7 @@ using Gtk;
 using System;
 
 
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 public class GUI
 { 
     static string filePath;
@@ -119,10 +121,14 @@ public class GUI
     }
     
     static Window finder;
-    static Entry entry2 = new Entry();
+    static Entry entry2;
     static Label InvalidFilepathLabel = new Label("Please insert a valid path!");
+    public static CheckButton subDirSearch;
+    public static bool subDirSearchToggled;
 
     static void SongFinder() {
+        subDirSearchToggled = false;
+        entry2 = new Entry();
         finder = new Window("Finder");
         finder.Resize(200, 200);
         finder.Resizable = false;
@@ -132,11 +138,16 @@ public class GUI
         entry2.MarginTop = 20;
         entry2.MarginBottom = 20;
         Button confirm = new Button("Confirm");
+        confirm.MarginTop = 20;
+        confirm.MarginBottom = 20;
+        subDirSearch = new CheckButton("Also search subdirectories");
+        subDirSearch.Toggled += subTogHandler!;
         
         confirm.ButtonPressEvent += FinderHandler; //BUG: Sometimes console throws error if the button is pressed twice. Investigate.
 
         finderCont.Add(label);
         finderCont.Add(entry2);
+        finderCont.Add(subDirSearch);
         finderCont.Add(confirm);
         
         finder.Add(finderCont);
@@ -168,6 +179,11 @@ public class GUI
                 }
             }
         }
+    }
+    
+    [ConnectBefore]
+    static void subTogHandler(object obj, EventArgs args) {
+        subDirSearchToggled = !subDirSearchToggled;
     }
 }
 
