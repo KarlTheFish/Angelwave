@@ -15,7 +15,8 @@ public class Finder
         if (GUI.subDirSearchToggled == true) {
             FindSongsInDir(filePath);
             foreach (var dir in Directory.GetDirectories(filePath)) {
-                FindSongsInDir(dir);
+                FindSongsInDir(dir); //BUG: Only finds songs in first level subdirectory
+                //TODO: Fix the bug - make the function recursive?
             }
         }
         else {

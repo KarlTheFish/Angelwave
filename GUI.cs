@@ -121,32 +121,32 @@ public class GUI
     }
     
     static Window finder;
-    static Entry entry2;
+    static FileChooserButton chooseFile;
     static Label InvalidFilepathLabel = new Label("Please insert a valid path!");
     public static CheckButton subDirSearch;
     public static bool subDirSearchToggled;
 
     static void SongFinder() {
         subDirSearchToggled = false;
-        entry2 = new Entry();
         finder = new Window("Finder");
         finder.Resize(200, 200);
         finder.Resizable = false;
         VBox finderCont = new VBox();
         finderCont.Margin = 20;
-        Label label = new Label("Insert music file path:");
-        entry2.MarginTop = 20;
-        entry2.MarginBottom = 20;
+        Label lbl = new Label("Choose the folder to be searched for music files:");
+        chooseFile = new FileChooserButton("Choose folder with music files:", FileChooserAction.Open);
+        chooseFile.MarginTop = 20;
+        chooseFile.MarginBottom = 20;
         Button confirm = new Button("Confirm");
         confirm.MarginTop = 20;
         confirm.MarginBottom = 20;
         subDirSearch = new CheckButton("Also search subdirectories");
         subDirSearch.Toggled += subTogHandler!;
         
-        confirm.ButtonPressEvent += FinderHandler; //BUG: Sometimes console throws error if the button is pressed twice. Investigate.
-
-        finderCont.Add(label);
-        finderCont.Add(entry2);
+        confirm.ButtonPressEvent += FinderHandler;
+        
+        finderCont.Add(lbl);
+        finderCont.Add(chooseFile);
         finderCont.Add(subDirSearch);
         finderCont.Add(confirm);
         
@@ -159,8 +159,8 @@ public class GUI
     
     [ConnectBefore]
     static void FinderHandler(object obj, ButtonPressEventArgs args) {
-        if (args.Event.Button == 1) {
-            filePath = entry2.Text;
+        if (args.Event.Button == 1){
+            filePath = chooseFile.CurrentFolder;
             if (filePath == "") {
                 if (InvalidFilepathLabel.Visible == false) {
                     InvalidFilepathLabel.Show();
