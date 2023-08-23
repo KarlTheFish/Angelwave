@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using Gtk;
 
 namespace Angelwave; //TODO: Make song data saved in a file
@@ -8,6 +9,7 @@ public class Finder
     private static bool newSongsFound;
     public static List<int> NoPlaylists = new List<int>();
     static readonly List<Song> FoundSongs = new List<Song>();
+    private static XDocument allSongs = new XDocument(new XDeclaration("1.0", "UTF-8", "yes"));
 
     public static void FindAllSongs(string filePath) {
         NoPlaylists.Add(-1);
@@ -56,5 +58,9 @@ public class Finder
                 newSongsFound = true;
             }
         }
+    }
+
+    static void AddSongToXML(Song song){
+        
     }
 }
