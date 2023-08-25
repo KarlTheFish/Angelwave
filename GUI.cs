@@ -171,7 +171,7 @@ public class GUI
                     Finder.FindAllSongs(filePath);
                 }
                 catch (Exception e) {
-                    Console.WriteLine("No songs were found!");
+                    Console.WriteLine(e);
                 }
                 finally {
                     finder.Destroy();

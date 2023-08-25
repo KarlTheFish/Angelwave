@@ -1,14 +1,24 @@
+using System.Xml.Serialization;
+
 namespace Angelwave;
 
+[XmlRoot("AllSongs")]
 public struct Song {
-    public string Name;
-    public string Artist;
-    public string Path;
-    public List<int> Playlists;
+    [XmlElement(ElementName = "Title")]
+    public string Title { get; set; }
+    
+    [XmlElement(ElementName = "Artist")]
+    public string Artist { get; set; }
+    
+    [XmlElement(ElementName = "Path")]
+    public string Path { get; set; }
+    
+    [XmlElement(ElementName = "Playlists")]
+    public List<int> Playlists { get; set; }
 
-    public Song(string name, string artist, string path, List<int> playlists)
+    public Song(string title, string artist, string path, List<int> playlists)
     {
-        Name = name;
+        Title = title;
         Artist = artist;
         Path = path;
         Playlists = playlists;
