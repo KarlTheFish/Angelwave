@@ -33,6 +33,8 @@ public class Finder
         //Once the if-else block is done, all (new) songs are shown in GUI and saved to XML
         GUI.songsList.ShowAll();
         allSongs.Save("/home/karl-aleksander/RiderProjects/Angelwave/songsList.xml");
+        GUI.finder.Destroy();
+        GUI.finder = new Window("Finder");
     }
 
     public static void newSongFound(Song song) {

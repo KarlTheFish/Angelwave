@@ -120,13 +120,13 @@ public class GUI
         }
     }
     
-    static Window finder;
+    public static Window finder;
     static FileChooserButton chooseFile;
     static Label InvalidFilepathLabel = new Label("Please insert a valid path!");
     public static CheckButton subDirSearch;
     public static bool subDirSearchToggled;
 
-    static void SongFinder() {
+    public static void SongFinder() {
         subDirSearchToggled = false;
         finder = new Window("Finder");
         finder.Resize(200, 200);
@@ -156,28 +156,25 @@ public class GUI
         
         finderCont.Add(InvalidFilepathLabel);
     }
+
+    private static MessageDialog invalidFilepathError;
     
     [ConnectBefore]
     static void FinderHandler(object obj, ButtonPressEventArgs args) {
         if (args.Event.Button == 1){
             filePath = chooseFile.CurrentFolder;
-            if (filePath == "") {
-                if (InvalidFilepathLabel.Visible == false) {
-                    InvalidFilepathLabel.Show();
-                }
-            }
-            else {
                 try {
                     Finder.FindAllSongs(filePath);
                 }
                 catch (Exception e) {
-                    Console.WriteLine(e);
+                    if (InvalidFilepathLabel.Visible == false) {
+                        InvalidFilepathLabel.Show();
+                    }
                 }
                 finally {
-                    finder.Destroy();
-                    finder = new Window("Finder");
+                    //finder.Destroy();
+                    //finder = new Window("Finder");
                 }
-            }
         }
     }
     
