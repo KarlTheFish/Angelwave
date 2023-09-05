@@ -4,11 +4,26 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <Nullable>enable</Nullable>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="GtkSharp" Version="3.24.24.95" />
+        <PackageReference Include="Avalonia" Version="11.0.2"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.2"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.2"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.2"/>
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2"/>
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.2"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Folder Include="Assets\**" />
+      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>
