@@ -12,6 +12,7 @@ public class Finder
     public static List<int> NoPlaylists = new List<int>();
     static readonly List<Song> FoundSongs = new List<Song>();
     private static XDocument allSongs = new XDocument(new XDeclaration("1.0", "UTF-8", "yes"), new XElement("allSongs"));
+    private static string songsDir = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/songsList.xml";
 
     public static void FindAllSongs(string filePath)
     {
@@ -32,7 +33,7 @@ public class Finder
         
         //Once the if-else block is done, all (new) songs are shown in GUI and saved to XML
         GUI.songsList.ShowAll();
-        allSongs.Save("/home/karl-aleksander/RiderProjects/Angelwave/songsList.xml");
+        allSongs.Save(songsDir);
         GUI.finder.Destroy();
         GUI.finder = new Window("Finder");
     }
@@ -56,6 +57,8 @@ public class Finder
             new XElement("Path", song.Path),
             new XElement("Playlists", song.Playlists)
         );
+        
+        
         
         allSongs.Root.Add(songElement);
     }
